@@ -115,7 +115,6 @@ int (*builtin_func[]) (char **) = {
 
 int exec_pipe(char** str1, char** str2, int val)
 {
-	//printf("%s", str2[0]);
 	char buff[4096];
 	int counter = 0;
 	ssize_t write_count = 0;
@@ -141,19 +140,15 @@ int exec_pipe(char** str1, char** str2, int val)
 	
 	if(pid1 == 0){
 		//CHILD1		
-		//printf("child 1 starts");
-		//count += write(fd_count[1],buff,val);
 		dup2(fd1[WRITE], 1);
 		for (int i = 0; i < bil_builtins(); i++) {
 				if (strcmp(str1[0], bilshell_commands[i]) == 0) {
-					//printf("abc");
 					(*bilshell_func[i])(str1,val);
 				}
 			}
 		execvp(str1[0],str1);
 		
-		exit(0);
-		//close(fd2[WRITE]);	
+		exit(0);	
 	}
 
 	else if (pid1 < 0){ /* error occurred */
@@ -161,12 +156,10 @@ int exec_pipe(char** str1, char** str2, int val)
 		return 1;
 	}
 	 else{ /* parent process */
-		//printf("parent 1 starts \n");
 		/*close the unused end of the pipe */
 		
 		wait(NULL);
                 close(fd1[WRITE]);
-		//printf("child 1 term \n");
 		while( r_count = read(fd1[READ], buff, val) > 0)
 		{
 			write_count += write(fd2[WRITE],buff,val);
@@ -176,8 +169,6 @@ int exec_pipe(char** str1, char** str2, int val)
 		close(fd1[READ]);
 		close(fd2[WRITE]);
 
-		
-		//buff[counter] = '\0';
 		/* fork a child process */
 		pid2 = fork();
 		if(pid2 == 0){
@@ -199,7 +190,6 @@ int exec_pipe(char** str1, char** str2, int val)
 			return 1;
 		}
 		else if(pid2 > 0){ /* parent process */
-			//printf("parent2 1 starts");
 			/*close the unused end of the pipe */
 		
 			wait(NULL);
@@ -280,7 +270,6 @@ void interactive(char **args, int val){
 	char ** params;
 
 	char *rand;
-	//int exit = 0;
 
 	int done;
 	while(1){
@@ -336,7 +325,6 @@ void interactive(char **args, int val){
 			else{
 				for (int i = 0; i < bil_builtins(); i++) {
 				if (strcmp(params[0], bilshell_commands[i]) == 0) {
-					//printf("abc");
 					(*bilshell_func[i])(params,val);
 				}
 			}
@@ -349,18 +337,9 @@ void interactive(char **args, int val){
 			else if(!piped) {
 				done = execute(params);
 			}
-			
-			//printf("%s",rand);
-			
-			
 
 			free(command);
 			free(args);
-			//free(rand);
-
-			//if(done < 0){
-				//return;
-			//}
 		}
 	}
 	free(str_1);
@@ -377,9 +356,7 @@ void batch(char **args, int val){
 	char line[200];
 	char **params;
 	
-	//char *random;
 	int done;
-	//char c;
 	
 	int line_count = 0;
 	char curr;
@@ -461,20 +438,13 @@ void batch(char **args, int val){
 				done = execute(params);
 			}
 
-			//if(done < 0){
-			//	return;
-			//}
-		//line[strlen(line)] = '\0';
-	
 		}
 		if(!text)
 			break;
-		//printf("%s", str2[0]);
 	}
 	
 	fclose(text);
 	free(params);
-	//exit(0);
 	free(args);
 }
 int main(int argc, char **argv)
