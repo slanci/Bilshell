@@ -39,33 +39,26 @@ int bil_builtins() {
 void consumer_command(char **params, int val)
 {
 	int M = atoi(params[1]);
-	//printf("girdi");
 	char buff[M];	
   	if (params[1] == NULL) {
     		fprintf(stderr, "Consumer command failed\n");
   	} else{
 		read(0,buff,val);
   	}
-	//int index = 0;
 }
 
 void producer_command(char **params , int val)
 {
 	int M = atoi(params[1]);
 	char buff[M];
-	//char* random = malloc( sizeof(char) * ( M + 1 ) );	
-  	//printf("abc");
   	if (params[1] == NULL) {
     		fprintf(stderr, "Consumer command failed\n");
   	}
 	else{
-		//printf("abc");
 		srandom(time(NULL));
 		char alphanumerics[] = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz1234567890";
 		for( int i = 0; i < M; ++i)
 		{
-			//srandom(time(NULL));
-
 			buff[i] = alphanumerics[random() % (sizeof(alphanumerics) - 1)];
 		}
 		
@@ -77,8 +70,6 @@ void producer_command(char **params , int val)
 		write(1, buff,val);
 		m_val -= val;
 	}
-	//printf("\n");
-	//return random;
 }
 
 void time_command(char **params, int val){
@@ -177,7 +168,6 @@ int exec_pipe(char** str1, char** str2, int val)
 		dup2(fd2[READ], 0);
 		for (int i = 0; i < bil_builtins(); i++) {
 				if (strcmp(str2[0], bilshell_commands[i]) == 0) {
-					//printf("abc");
 					(*bilshell_func[i])(str2,val);
 				}
 			}
